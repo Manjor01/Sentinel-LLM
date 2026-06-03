@@ -3,6 +3,7 @@ import os
 from dotenv import load_dotenv
 from src.detector.analyzer import PromptInjectionAnalyzer, AnalysisResult
 from src.api.ollama_client import OllamaClient
+from src.alerts.telegram_alert import send_alert
 
 load_dotenv()
 
@@ -80,6 +81,7 @@ class SentinelPipeline:
                 f"risk_score={result.risk_score} | "
                 f"rules={result.triggered_rules}"
             )
+            send_alert(result)
         else:
             logger.info(
                 f"Normal interaction | "
